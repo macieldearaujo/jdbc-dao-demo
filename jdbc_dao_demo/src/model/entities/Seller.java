@@ -1,22 +1,28 @@
 package model.entities;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
-public class Seller {
+public class Seller implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
+	
 	private Integer id;
 	private String name;
 	private String email;
 	private Date birthDate;
 	private Double baseSalary;
+	private Department department;
 	
-	public Seller(Integer id, String name, String email, Date birthDate, Double baseSalary) {
+	public Seller(Integer id, String name, String email, Date birthDate, Double baseSalary, Department department) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.birthDate = birthDate;
 		this.baseSalary = baseSalary;
+		this.department = department;
 	}
 
 	public Integer getId() {
@@ -55,9 +61,17 @@ public class Seller {
 		return baseSalary;
 	}
 
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(baseSalary, birthDate, email, id, name);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -69,14 +83,9 @@ public class Seller {
 		if (getClass() != obj.getClass())
 			return false;
 		Seller other = (Seller) obj;
-		return Objects.equals(baseSalary, other.baseSalary) && Objects.equals(birthDate, other.birthDate)
-				&& Objects.equals(email, other.email) && Objects.equals(id, other.id)
-				&& Objects.equals(name, other.name);
-	}	
-	
-	@Override
-	public String toString() {
-		return "";
+		return Objects.equals(id, other.id);
 	}
+
+	
 	
 }
