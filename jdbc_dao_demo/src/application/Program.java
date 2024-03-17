@@ -1,10 +1,10 @@
 package application;
 
-import java.util.Date;
+import java.sql.Connection;
 
+import db.DB;
 import model.dao.DaoFactory;
 import model.dao.SellerDao;
-import model.entities.Department;
 import model.entities.Seller;
 
 public class Program {
@@ -12,12 +12,12 @@ public class Program {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		Department dep = new Department(1, "books");
-		Seller seller = new Seller(21, "Bob", "bob@gmail.com", new Date(), 3000.00, dep);
+		Connection conn = DB.getConnection();
 		
-		System.out.println(dep + "\n" + seller);
+		SellerDao s1 = DaoFactory.createSellerDao(conn);
 		
-		SellerDao sellerDao = DaoFactory.createSellerDao();
+		Seller s2 = s1.findById(3);
+		System.out.println(s2);
 	}
 
 }
