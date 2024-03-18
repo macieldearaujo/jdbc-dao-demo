@@ -51,7 +51,7 @@ public class SellerDaoJDBC implements SellerDao {
 					+ "WHERE s.id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
-			while(rs.next()) {
+			if(rs.next()) {
 				Department dep = instantiateDepartment(rs);
 				Seller seller = instantiateSeller(rs, dep);
 				return seller;
@@ -65,8 +65,8 @@ public class SellerDaoJDBC implements SellerDao {
 	public Department instantiateDepartment(ResultSet rs) {
 		try {
 			Department dep = new Department();
-			dep.setId(rs.getInt("Id"));
-			dep.setName(rs.getString("Name"));
+			dep.setId(rs.getInt("DepartmentId"));
+			dep.setName(rs.getString("DepartmentName"));
 			return dep;
 		} catch(SQLException e) {
 			throw new DbException(e.getMessage());

@@ -14,7 +14,7 @@ public class Program {
 
 		Connection conn = DB.getConnection();
 		
-		SellerDao s1 = DaoFactory.createSellerDao(conn);
+		SellerDao s1 = DaoFactory.createSellerDao();
 		
 		Seller s2 = s1.findById(3);
 		System.out.println(s2);
