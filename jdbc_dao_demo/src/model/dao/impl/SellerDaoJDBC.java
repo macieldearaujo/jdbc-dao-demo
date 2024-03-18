@@ -16,8 +16,6 @@ public class SellerDaoJDBC implements SellerDao {
 
 	private Connection conn = null;
 	
-	
-	
 	public SellerDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
