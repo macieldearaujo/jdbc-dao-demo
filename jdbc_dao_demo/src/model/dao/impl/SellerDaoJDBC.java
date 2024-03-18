@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import db.DB;
@@ -54,22 +53,41 @@ public class SellerDaoJDBC implements SellerDao {
 					+ "WHERE s.id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
-			
 			while(rs.next()) {
-					Integer columnId = rs.getInt("Id");
-					String columnName = rs.getString("Name");
-					String columnEmail = rs.getString("Email");
-					Date columnBirthDate =  rs.getDate("BirthDate");
-					Double columnBaseSalary = rs.getDouble("BaseSalary");
-					Integer columnDepartmentId = rs.getInt("DepartmentId");
-					String columnDepartmentName = rs.getString("DepartmentName");
-					
-					return new Seller(columnId, columnName, columnEmail, columnBirthDate, columnBaseSalary, new Department(columnDepartmentId, columnDepartmentName));
+				Department dep = instantiateDepartment(rs);
+				Seller seller = instantiateSeller(rs, dep);
+				return seller;
 			}
 		} catch(SQLException e) {
 			throw new DbException("Error: " + e.getMessage());
 		}
 		return null;
+	}
+	
+	public Department instantiateDepartment(ResultSet rs) {
+		try {
+			Department dep = new Department();
+			dep.setId(rs.getInt("Id"));
+			dep.setName(rs.getString("Name"));
+			return dep;
+		} catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+	}
+	
+	public Seller instantiateSeller(ResultSet rs, Department dep) {
+		try {
+			Seller seller = new Seller();
+			seller.setId(rs.getInt("Id"));
+			seller.setName(rs.getString("Name"));
+			seller.setEmail(rs.getString("Email"));
+			seller.setBirthDate(rs.getDate("BirthDate"));
+			seller.setBaseSalary(rs.getDouble("BaseSalary"));
+			seller.setDepartment(dep);
+			return seller;
+		} catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
 	}
 
 	@Override
