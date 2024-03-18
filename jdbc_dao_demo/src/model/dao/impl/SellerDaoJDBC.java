@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -89,10 +91,10 @@ public class SellerDaoJDBC implements SellerDao {
 		}
 	}
 	
-	public List<Seller> findByDepartment(Integer id) {
+	public List<Seller> findByDepartment(Department d) {
 		ResultSet rs = null;
 		PreparedStatement ps = null;
-		List<Seller> list = new ArrayList<>();
+		
 		try {
 			conn = DB.getConnection();
 			ps = conn.prepareStatement(
@@ -101,10 +103,16 @@ public class SellerDaoJDBC implements SellerDao {
 					+ "JOIN department d ON d.Id = s.DepartmentId "
 					+ "WHERE s.DepartmentId = ? "
 					+ "ORDER BY s.name");
-			ps.setInt(1, id);
+			ps.setInt(1, d.getId());
 			rs = ps.executeQuery();
+			List<Seller> list = new ArrayList<>();
+			Map<Integer, Department> map = new HashMap<>();
 			while(rs.next()) {				
-				Department dep = instantiateDepartment(rs);
+				Department dep = map.get(rs.getInt("DepartmentId"));
+				if(dep == null) {
+					dep = instantiateDepartment(rs);
+					map.put(rs.getInt("DepartmentId"), dep);
+				}
 				Seller seller = instantiateSeller(rs, dep);
 				list.add(seller);
 			}
