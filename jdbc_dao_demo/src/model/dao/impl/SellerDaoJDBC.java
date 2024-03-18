@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -83,6 +84,31 @@ public class SellerDaoJDBC implements SellerDao {
 			seller.setBaseSalary(rs.getDouble("BaseSalary"));
 			seller.setDepartment(dep);
 			return seller;
+		} catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+	}
+	
+	public List<Seller> findByDepartment(Integer id) {
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		List<Seller> list = new ArrayList<>();
+		try {
+			conn = DB.getConnection();
+			ps = conn.prepareStatement(
+					"SELECT s.*, d.Name AS DepartmentName "
+					+ "FROM seller s "
+					+ "JOIN department d ON d.Id = s.DepartmentId "
+					+ "WHERE s.DepartmentId = ? "
+					+ "ORDER BY s.name");
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			while(rs.next()) {				
+				Department dep = instantiateDepartment(rs);
+				Seller seller = instantiateSeller(rs, dep);
+				list.add(seller);
+			}
+			return list;
 		} catch(SQLException e) {
 			throw new DbException(e.getMessage());
 		}
