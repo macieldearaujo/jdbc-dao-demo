@@ -13,30 +13,36 @@ public class Program {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		SellerDao s1 = DaoFactory.createSellerDao();
+		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
 		System.out.println("\n=== TEST 1: seller findById ===");
-		Seller s2 = s1.findById(3);
-		System.out.println(s2);
+		Seller seller = sellerDao.findById(3);
+		System.out.println(seller);
 
 		System.out.println("\n=== TEST 2: seller findByDepartment ===");
 		Department department = new Department(2, null);
-		List<Seller> list = s1.findByDepartment(department);
+		List<Seller> list = sellerDao.findByDepartment(department);
 		
-		for(Seller seller : list) {
+		for(Seller obj : list) {
 			System.out.println(seller);
 		}
 		
 		System.out.println("\n=== TEST 3: seller findAll ===");
-		list = s1.findAll();
-		for(Seller seller : list) {
+		list = sellerDao.findAll();
+		for(Seller obj : list) {
 			System.out.println(seller);
 		}
 		
 		System.out.println("\n=== TEST 4: seller insert ===");
 		Seller newSeller = new Seller(null, "Nando Moura", "nando@gmail.com", new Date(), 4000.00, department);
-		s1.insert(newSeller);
+		sellerDao.insert(newSeller);
 		System.out.println("Insert! New id: " + newSeller.getId());
+		
+		System.out.println("\n=== TEST 5: seller  ===");
+		seller = sellerDao.findById(11);
+		seller.setName("Não é o Nando mais");
+		sellerDao.update(seller);
+		System.out.println("Updated! Sucessfully updated rows");
 	}
 
 }
