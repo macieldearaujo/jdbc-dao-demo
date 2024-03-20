@@ -13,5 +13,7 @@ public class Program2 {
 		Department newDepartment = new Department(null, "Administrativo");
 		departmentDao.insert(newDepartment);
 		System.out.println("Done! New id = " + newDepartment.getId());
+		
+		
 	}
 }
