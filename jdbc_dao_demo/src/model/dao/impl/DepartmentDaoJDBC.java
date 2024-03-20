@@ -68,6 +68,9 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 		catch(SQLException e) {
 			throw new DbException(e.getMessage());
 		}
+		finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
