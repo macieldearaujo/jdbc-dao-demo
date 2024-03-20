@@ -1,6 +1,5 @@
 package application;
 
-import java.util.Date;
 import java.util.List;
 
 import model.dao.DaoFactory;
@@ -23,26 +22,32 @@ public class Program {
 		Department department = new Department(2, null);
 		List<Seller> list = sellerDao.findByDepartment(department);
 		
-		for(Seller obj : list) {
-			System.out.println(seller);
-		}
+		//for(Seller obj : list) {
+		//	System.out.println(seller);
+		//}
 		
 		System.out.println("\n=== TEST 3: seller findAll ===");
 		list = sellerDao.findAll();
 		for(Seller obj : list) {
-			System.out.println(seller);
+			System.out.println(obj);
 		}
 		
 		System.out.println("\n=== TEST 4: seller insert ===");
-		Seller newSeller = new Seller(null, "Nando Moura", "nando@gmail.com", new Date(), 4000.00, department);
-		sellerDao.insert(newSeller);
-		System.out.println("Insert! New id: " + newSeller.getId());
+		//Seller newSeller = new Seller(null, "Nando Moura", "nando@gmail.com", new Date(), 4000.00, department);
+		//sellerDao.insert(newSeller);
+		//System.out.println("Insert! New id: " + newSeller.getId());
 		
-		System.out.println("\n=== TEST 5: seller  ===");
-		seller = sellerDao.findById(11);
-		seller.setName("Não é o Nando mais");
-		sellerDao.update(seller);
+		System.out.println("\n=== TEST 5: seller update ===");
+		//seller = sellerDao.findById(10);
+		//seller.setId(8);
+		//sellerDao.update(seller);
 		System.out.println("Updated! Sucessfully updated rows");
+		
+		System.out.println("\n=== TEST 6: seller delete ===");
+		int id = 11;
+		sellerDao.deleteById(id);
+		System.out.println("Sucessfully! Row " + id + " deleted.");
+		
 	}
 
 }

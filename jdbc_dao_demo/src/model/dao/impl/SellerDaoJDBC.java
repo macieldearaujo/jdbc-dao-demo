@@ -12,6 +12,7 @@ import java.util.Map;
 
 import db.DB;
 import db.DbException;
+import db.DbIntegrityException;
 import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
@@ -87,7 +88,22 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			conn = DB.getConnection();
+			st = conn.prepareStatement(
+					"DELETE FROM seller"
+					+ "WHERE Id = ?"); // *****
+			st.setInt(1, id);
+			st.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DbIntegrityException("Unexpected error! " + e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeConnection();
+		}
 		
 	}
 
@@ -109,8 +125,13 @@ public class SellerDaoJDBC implements SellerDao {
 				Seller seller = instantiateSeller(rs, dep);
 				return seller;
 			}
-		} catch(SQLException e) {
+		}
+		catch(SQLException e) {
 			throw new DbException("Error: " + e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeConnection();
 		}
 		return null;
 	}
@@ -172,6 +193,11 @@ public class SellerDaoJDBC implements SellerDao {
 		} catch(SQLException e) {
 			throw new DbException(e.getMessage());
 		}
+		finally {
+			DB.closeResultSet(rs);
+			DB.closeStatement(ps);
+			DB.closeConnection();
+		}
 	}
 
 	@Override
@@ -202,6 +228,10 @@ public class SellerDaoJDBC implements SellerDao {
 			return list;
 		} catch(SQLException e) {
 			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(ps);
+			DB.closeConnection();
 		}
 	}
 
