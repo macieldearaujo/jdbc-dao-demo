@@ -92,17 +92,17 @@ public class SellerDaoJDBC implements SellerDao {
 		try {
 			conn = DB.getConnection();
 			st = conn.prepareStatement(
-					"DELETE FROM seller"
+					"DELETE FROM seller "
 					+ "WHERE Id = ?"); // *****
 			st.setInt(1, id);
-			st.executeUpdate();
+			int rowsAffected = st.executeUpdate();
+			System.out.println("Done! " + rowsAffected + " rows deleted.");
 		}
 		catch(SQLException e) {
 			throw new DbIntegrityException("Unexpected error! " + e.getMessage());
 		}
 		finally {
-			DB.closeStatement(st);
-			DB.closeConnection();
+			DB.closeStatement(st);
 		}
 		
 	}
@@ -130,8 +130,7 @@ public class SellerDaoJDBC implements SellerDao {
 			throw new DbException("Error: " + e.getMessage());
 		}
 		finally {
-			DB.closeStatement(st);
-			DB.closeConnection();
+			DB.closeStatement(st);
 		}
 		return null;
 	}
@@ -195,8 +194,7 @@ public class SellerDaoJDBC implements SellerDao {
 		}
 		finally {
 			DB.closeResultSet(rs);
-			DB.closeStatement(ps);
-			DB.closeConnection();
+			DB.closeStatement(ps);
 		}
 	}
 
@@ -230,8 +228,7 @@ public class SellerDaoJDBC implements SellerDao {
 			throw new DbException(e.getMessage());
 		}
 		finally {
-			DB.closeStatement(ps);
-			DB.closeConnection();
+			DB.closeStatement(ps);
 		}
 	}
 

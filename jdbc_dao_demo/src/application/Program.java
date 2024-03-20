@@ -44,7 +44,7 @@ public class Program {
 		System.out.println("Updated! Sucessfully updated rows");
 		
 		System.out.println("\n=== TEST 6: seller delete ===");
-		int id = 11;
+		int id = 14;
 		sellerDao.deleteById(id);
 		System.out.println("Sucessfully! Row " + id + " deleted.");
 		
