@@ -89,9 +89,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			
 			int rowsAffected = st.executeUpdate();
 			
-			if(rowsAffected > 0) {
-				System.out.println("Done! " + rowsAffected + " row(s) deleted.");
-			} else {
+			if(rowsAffected <= 0) {
 				throw new DbException("This row is not founded.");
 			}
 		}
