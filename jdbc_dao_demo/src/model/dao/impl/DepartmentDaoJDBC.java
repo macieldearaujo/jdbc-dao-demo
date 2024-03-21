@@ -9,6 +9,7 @@ import java.util.List;
 
 import db.DB;
 import db.DbException;
+import db.DbIntegrityException;
 import model.dao.DepartmentDao;
 import model.entities.Department;
 
@@ -76,7 +77,29 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		
+		try {
+			conn = DB.getConnection();
+			st = conn.prepareStatement(
+				"DELETE FROM department "
+				+ "WHERE Id = ?");
+			st.setInt(1, id);
+			
+			int rowsAffected = st.executeUpdate();
+			
+			if(rowsAffected > 0) {
+				System.out.println("Done! " + rowsAffected + " row(s) deleted.");
+			} else {
+				throw new DbException("This row is not founded.");
+			}
+		}
+		catch(SQLException e) {
+			throw new DbIntegrityException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
